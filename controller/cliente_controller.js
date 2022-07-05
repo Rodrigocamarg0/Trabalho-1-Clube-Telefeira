@@ -1,4 +1,5 @@
 const clienteNegocio = require('../negocio/cliente_negocio');
+const pontoNegocio = require('../negocio/ponto_negocio');
 
 const jwt = require('jsonwebtoken');
 
@@ -14,7 +15,10 @@ exports.listar = async (req, res) => {
 exports.buscarPorId = async (req, res) => {
     const id = req.params.id;
     try{
+        const nada = await pontoNegocio.atualizar(id, true);
         const cliente = await clienteNegocio.buscarPorId(id);
+        
+        console.log(nada)
         res.json(cliente);                
     }
     catch (err) {

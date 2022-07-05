@@ -1,5 +1,7 @@
 const compraRepository = require('../repository/compra_repository');
 const clienteRepository = require('../repository/cliente_repository');
+const produtoRepository = require('../repository/produto_repository');
+
 
 exports.listar = async () => {
     try {
@@ -42,6 +44,27 @@ exports.buscarPorIdCliente = async (id) => {
         }
         else {
 
+            let listaProdutos = []
+            let dadosDoProduto = {}
+
+            const produtos = await produtoRepository.listar(id);
+
+            compra.forEach(element => {
+                listaProdutos.push(element.id_produto);
+            });
+            
+            
+            listaProdutos.forEach(item => {
+                produtos.forEach(element => {
+                    if (item === element.id){
+                        dadosDoProduto[element.id] = element
+                    }
+                });
+            });
+
+            listaProdutos = [...new Set(listaProdutos)];
+
+
             const groupByIdCompra = compra.reduce((group, compra) => {
                 const { id_compra } = compra;
                 group[id_compra] = group[id_compra] ?? [];
@@ -55,7 +78,7 @@ exports.buscarPorIdCliente = async (id) => {
                 objCompras[key] = {
                     id_cliente: groupByIdCompra[key][0].id_cliente,
                     data: groupByIdCompra[key][0].data,
-                    produtos: groupByIdCompra[key].map(produto => produto.id_produto)
+                    produtos: groupByIdCompra[key].map(produto => dadosDoProduto[produto.id_produto])
                 };
             }
 

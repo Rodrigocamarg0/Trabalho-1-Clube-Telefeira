@@ -20,6 +20,25 @@ exports.listar = async () => {
     catch (err) { throw err; }
 }
 
+
+
+exports.listarPreco = async () => {
+    const cliente = new Client(conexao);
+    cliente.connect();
+    try{ 
+        const resultado = await cliente.query("SELECT id, preco::numeric FROM produto");
+        let newResultadoObj = {}
+        cliente.end();
+        
+        resultado.rows.forEach(prod => {
+            newResultadoObj[prod.id] = prod.preco
+        });
+        
+        return (newResultadoObj);
+    }
+    catch (err) { throw err; }
+}
+
 exports.buscarPorId = async (id) => {
     const sql = "SELECT * FROM produto WHERE id=$1";
     const values = [id];
