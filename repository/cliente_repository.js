@@ -43,6 +43,27 @@ exports.buscarPorId = async (id) => {
     }
 }
 
+exports.existe = async (id) => {
+    const sql = "SELECT EXISTS (SELECT * FROM cliente WHERE id=$1)";
+    const values = [id];
+
+    const client = new Client(conexao);
+    client.connect();
+
+    try {
+        const resultado = await client.query(sql, values);
+        client.end();
+        return (resultado.rows[0].exists);
+    }
+    catch (err) {
+        let error = {};
+        error.name = err.name;
+        error.message = err.message;
+        error.status = 500;
+        throw error;
+    }
+}
+
 exports.inserir = async (cliente) => {
     const sql = "INSERT INTO cliente (nome, idade, cidade, pontos) VALUES ($1, $2, $3, $4) RETURNING *";
     const values = [

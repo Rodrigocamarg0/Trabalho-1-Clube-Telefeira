@@ -49,7 +49,26 @@ exports.buscarUltimoId = async () => {
     }
 }
 
+exports.buscarPorIdCliente = async (id) => {
+    const sql = "SELECT * FROM compra WHERE id_cliente=$1";
+    const values = [id];
 
+    const cliente = new Client(conexao);
+    cliente.connect();
+
+    try{
+        const resultado = await cliente.query(sql, values);
+        cliente.end();
+        return(resultado.rows);        
+    }
+    catch (err) {
+        let error = {};
+        error.name = err.name;
+        error.message = err.message;
+        error.status = 500; 
+        throw error; 
+    }
+}
 
 exports.buscarPorId = async (id) => {
     const sql = "SELECT * FROM compra WHERE id=$1";

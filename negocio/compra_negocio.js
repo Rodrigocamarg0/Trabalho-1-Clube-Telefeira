@@ -1,18 +1,19 @@
 const compraRepository = require('../repository/compra_repository');
+const clienteRepository = require('../repository/cliente_repository');
 
 exports.listar = async () => {
-    try { 
-    const listacompras = await compraRepository.listar();
-    return listacompras;
-    } catch(err) { throw err; }
+    try {
+        const listacompras = await compraRepository.listar();
+        return listacompras;
+    } catch (err) { throw err; }
 }
 
 exports.buscarPorId = async (id) => {
     try {
-        
+
         const compra = await compraRepository.buscarPorId(id);
-   
-        if(!compra){
+
+        if (!compra) {
             let erro = new Error();
             erro.message = "compra nao encontrado";
             erro.status = 404;
@@ -22,41 +23,93 @@ exports.buscarPorId = async (id) => {
             return compra;
         }
     }
-    catch(err) {
+    catch (err) {
+        throw err;
+    }
+}
+
+
+exports.buscarPorIdCliente = async (id) => {
+    try {
+
+        const compra = await compraRepository.buscarPorIdCliente(id);
+
+        if (!compra) {
+            let erro = new Error();
+            erro.message = "Cliente não encontrado";
+            erro.status = 404;
+            throw erro;
+        }
+        else {
+
+            const groupByIdCompra = compra.reduce((group, compra) => {
+                const { id_compra } = compra;
+                group[id_compra] = group[id_compra] ?? [];
+                group[id_compra].push(compra);
+                return group;
+            }, {});
+
+            let objCompras = {}
+
+            for (const key in groupByIdCompra) {
+                objCompras[key] = {
+                    id_cliente: groupByIdCompra[key][0].id_cliente,
+                    data: groupByIdCompra[key][0].data,
+                    produtos: groupByIdCompra[key].map(produto => produto.id_produto)
+                };
+            }
+
+            return objCompras;
+
+
+
+        }
+    }
+    catch (err) {
         throw err;
     }
 }
 
 exports.inserir = async (compra) => {
-    var now = new Date();    
+
+    const clienteExistir = await clienteRepository.existe(compra.id_cliente);
+    console.log(clienteExistir);
+
+    var now = new Date();
     now = now.toISOString();
 
-    if(compra && (compra.produtos && compra.id_cliente)){
-        
-                     
-        const ultimoID = await compraRepository.buscarUltimoId();
+    if (clienteExistir) {
+        if (compra && (compra.produtos && compra.id_cliente)) {
 
+            const ultimoID = await compraRepository.buscarUltimoId();
 
-        try{
+            try {
 
-            const itemCompra = {
-                id_compra: ultimoID,
-                id_cliente: compra.id_cliente,
-                produtos: compra.produtos,
-                data: now
+                const itemCompra = {
+                    id_compra: ultimoID,
+                    id_cliente: compra.id_cliente,
+                    produtos: compra.produtos,
+                    data: now
+                }
+                const compraInserida = await compraRepository.inserir(itemCompra);
+
+                return compraInserida;
             }
-            const compraInserida = await compraRepository.inserir(itemCompra);
-        
-            return compraInserida;
+            catch (err) {
+                throw err;
+            }
+
         }
-        catch(err) {
-            throw err;  
+        else {
+            let erro = {}
+            erro.message = "Falta parametros de compra";
+            erro.status = 400;
+            throw erro;
         }
-        
     }
     else {
         let erro = {}
-        erro.message = "Falta parametros de compra";
+        erro.message = "Cliente não encontrado";
         erro.status = 400;
         throw erro;
     }
@@ -64,31 +117,31 @@ exports.inserir = async (compra) => {
 }
 
 exports.atualizar = async (id, compra) => {
-    
-    if(!compra || (!compra.nome && !compra.preco)) {
+
+    if (!compra || (!compra.nome && !compra.preco)) {
         let erro = {}
         erro.message = "Falta parametros de compra";
         erro.status = 400;
-        throw erro;        
+        throw erro;
     }
 
     try {
         const compraDB = await compraRepository.buscarPorId(id);
-        if(!compraDB){
+        if (!compraDB) {
             let erro = new Error();
             erro.message = "compra nao encontrado";
             erro.status = 404;
             throw erro;
         }
-        
+
         compra.nome = compra.nome || compraDB.nome;
         compra.preco = compra.preco || compraDB.preco;
 
-        const compraAlterado = await compraRepository.atualizar(id,compra);
+        const compraAlterado = await compraRepository.atualizar(id, compra);
         return compraAlterado;
 
     }
-    catch(err) {
+    catch (err) {
         throw err;
     }
 }
@@ -96,7 +149,7 @@ exports.atualizar = async (id, compra) => {
 exports.deletar = async (id) => {
     try {
         const compra = await compraRepository.deletar(id);
-        if(!compra){
+        if (!compra) {
             let erro = new Error();
             erro.message = "compra nao encontrado";
             erro.status = 404;
@@ -106,7 +159,7 @@ exports.deletar = async (id) => {
             return compra;
         }
     }
-    catch(err) {
+    catch (err) {
         throw err;
     }
 }

@@ -26,12 +26,28 @@ exports.buscarPorId = async (req, res) => {
     }
 }
 
+exports.buscarPorIdCliente = async (req, res) => {
+    const id = req.params.id;
+    try{
+        const compra = await compraNegocio.buscarPorIdCliente(id);
+        res.json(compra);                
+    }
+    catch (err) {
+        if(err.status) {
+            res.status(err.status).json(err);
+        }
+        else {
+            res.status(500).json({message: "Erro nao identificado"});            
+        }
+    }
+}
+
 exports.inserir = async (req, res) => {
     const compra = req.body;
     
     try{ 
         const compraInserido = await compraNegocio.inserir(compra);
-        console.log(compraRota);
+        console.log(compraInserido);
         res.status(201).json(compraInserido);
     }
     catch(err) {
