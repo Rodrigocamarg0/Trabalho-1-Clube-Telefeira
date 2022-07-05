@@ -5,7 +5,8 @@ const conexao = {
     port: 5432,
     user: 'ircvbktwiwbrer',
     password: '972dfee616319624d758630eba60f0c321a08afa0ff0dd4470a3ce870acc6c8e',
-    database: 'd22f85edakolpr'
+    database: 'd22f85edakolpr',
+    ssl: true
 };
 
 exports.listar = async () => {
@@ -19,8 +20,6 @@ exports.listar = async () => {
     catch (err) { throw err; }
 }
 
-<<<<<<< Updated upstream
-=======
 
 
 exports.listarPreco = async () => {
@@ -40,7 +39,7 @@ exports.listarPreco = async () => {
     catch (err) { throw err; }
 }
 
->>>>>>> Stashed changes
+
 exports.buscarPorId = async (id) => {
     const sql = "SELECT * FROM produto WHERE id=$1";
     const values = [id];
