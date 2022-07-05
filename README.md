@@ -1,3 +1,3 @@
-# pfs_2022_1_cadastro_produtos
+# Clube de Vantagens Telefeira
 
-Este projeto é voltado para a criação de uma API voltada para o cadastro de produtos.
+(https://docs.google.com/presentation/d/1tpkWgNsqrfw2ihRGAXxRJRVehhuFV35de5ouf7y_eoY/edit#slide=id.p)
