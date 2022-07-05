@@ -2,6 +2,8 @@ const express = require('express')
 const app = express()
 const port = process.env.PORT || 3000
 
+//process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
+
 const clienteController = require('./controller/cliente_controller');
 
 
