@@ -1,6 +1,4 @@
--- Table: public.cliente
 
--- DROP TABLE public.cliente;
 
 CREATE TABLE IF NOT EXISTS public.cliente
 (
@@ -18,10 +16,6 @@ ALTER TABLE public.cliente
     OWNER to postgres;
 	
 	
--- Table: public.compra
-
--- DROP TABLE public.compra;
-
 CREATE TABLE IF NOT EXISTS public.compra
 (
     id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
@@ -37,9 +31,6 @@ TABLESPACE pg_default;
 ALTER TABLE public.compra
     OWNER to postgres;
 	
--- Table: public.produto
-
--- DROP TABLE public.produto;
 
 CREATE TABLE IF NOT EXISTS public.produto
 (
