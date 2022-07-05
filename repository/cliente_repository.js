@@ -1,11 +1,11 @@
 const { Client } = require('pg');
 
 const conexao = {
-    host: 'localhost',
+    host: 'ec2-3-226-163-72.compute-1.amazonaws.com',
     port: 5432,
-    user: 'postgres',
-    password: 'Guigo@1410',
-    database: 'DB-TELEFEIRA-DSA'
+    user: 'ircvbktwiwbrer',
+    password: '972dfee616319624d758630eba60f0c321a08afa0ff0dd4470a3ce870acc6c8e',
+    database: 'd22f85edakolpr'
 };
 
 
