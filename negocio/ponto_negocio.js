@@ -25,7 +25,7 @@ exports.consulta = async (id) => {
 
 // Cada real gasto vale 0.5 verducoins (pontos)
 // Funcao para atualizar valor dos pontos na tabela do cliente
-exports.atualizar = async (id, update = false) => {
+exports.atualizar = async (id) => {
     try {
 
         // Busca pelas compras do cliente
@@ -48,6 +48,7 @@ exports.atualizar = async (id, update = false) => {
             });
             totalPontos = totalPontos.toFixed(2); 
             totalPontos   = parseFloat(totalPontos);
+            const update = true;
             console.log(update);
             if(update){
                 const pontuacaoAtualizada = await clienteRepository.atualizar(id, { "pontos" : totalPontos });

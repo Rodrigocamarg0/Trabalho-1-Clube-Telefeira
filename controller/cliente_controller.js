@@ -15,7 +15,7 @@ exports.listar = async (req, res) => {
 exports.buscarPorId = async (req, res) => {
     const id = req.params.id;
     try{
-        const nada = await pontoNegocio.atualizar(id, true);
+        const nada = await pontoNegocio.atualizar(id);
         const cliente = await clienteNegocio.buscarPorId(id);
         
         console.log(nada)
