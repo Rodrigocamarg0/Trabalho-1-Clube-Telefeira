@@ -7,7 +7,9 @@ const conexao = {
     user: 'ircvbktwiwbrer',
     password: '972dfee616319624d758630eba60f0c321a08afa0ff0dd4470a3ce870acc6c8e',
     database: 'd22f85edakolpr',
-    ssl: true
+    ssl: {
+        rejectUnauthorized: false,
+    },
 };
 
 
